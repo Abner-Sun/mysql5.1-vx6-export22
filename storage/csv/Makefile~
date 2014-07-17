@@ -1,0 +1,31 @@
+#--------------------------------------------------------------#
+TOP=../../
+OUTPUT?=../../output
+include $(OUTPUT)/rules.mk
+#--------------------------------------------------------------#
+
+#CONFIG_H_FILE:=../include/linux_mysql_config.h
+
+LIBNAME:=libcsv
+LIBLDFLAGS := -Wl,--version-script -Wl,symbol_export -lpthread -lrt
+LIBVERSION:=1.0
+LIBVERSION_SUB:=5
+STATICLIB:= Y
+EXTRACFLAGS += -DHAVE_CONFIG_H -I../../regex -I../../sql -I. -I../../include
+
+
+CPPFLAGS+=  -fno-implicit-templates -fno-exceptions -fno-rtti
+#CPPFLAGS:=  -fno-implicit-templates -fno-exceptions 
+
+LIBSRCS := ha_tina.cpp transparent_file.cpp
+
+all: $(LIBNAME)
+
+clean: rules_clean
+
+install: all rules_install
+
+#--------------------------------------------------------------#
+include $(OUTPUT)/rules.mk
+#--------------------------------------------------------------#
+

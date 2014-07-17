@@ -1,0 +1,6 @@
+ARCH_X86?=Y
+
+SYS_LINUX?=Y
+
+
+
