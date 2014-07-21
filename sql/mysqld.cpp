@@ -59,6 +59,10 @@
 
 #define mysqld_charset &my_charset_latin1
 
+//sfh add  , this defination is used to save the mysql_home dir from  parameters of mysqld mian function.
+const char *DEFAULT_MYSQL_HOME_DirPath;
+
+
 #ifdef HAVE_purify
 #define IF_PURIFY(A,B) (A)
 #else
@@ -1635,7 +1639,8 @@ static struct passwd *check_user(const char *user)
   }
   if (!user)
   {
-    if (!opt_bootstrap)
+	return NULL; /*sfh add*/
+	if (!opt_bootstrap)
     {
       sql_print_error("Fatal error: Please read \"Security\" section of the manual to find out how to run mysqld as root!\n");
       unireg_abort(1);
@@ -3989,13 +3994,13 @@ a file name for --log-bin-index option", opt_binlog_index_name);
       unireg_abort(ho_error);
     my_getopt_skip_unknown= TRUE;
 
-    if (defaults_argc)
+    /*sfh add if (defaults_argc)
     {
       fprintf(stderr, "%s: Too many arguments (first extra is '%s').\n"
               "Use --verbose --help to get a list of available options\n",
               my_progname, *tmp_argv);
       unireg_abort(1);
-    }
+    }*/
   }
 
   /* if the errmsg.sys is not loaded, terminate to maintain behaviour */
@@ -4290,6 +4295,17 @@ int main(int argc, char **argv)
 #ifdef HAVE_NPTL
   ld_assume_kernel_is_set= (getenv("LD_ASSUME_KERNEL") != 0);
 #endif
+
+  //sfh add
+  if(argc > 1){
+  	DEFAULT_MYSQL_HOME_DirPath=strdup(argv[1]);
+  }
+  if(DEFAULT_MYSQL_HOME_DirPath==NULL)
+  {
+	printf("error DEFAULT_MYSQL_HOME_DirPath\n"); 
+	exit(1);
+  }
+  //sfh add  end
 
   MY_INIT(argv[0]);		// init my_sys library & pthreads
   /* nothing should come before this line ^^^ */
@@ -8024,7 +8040,8 @@ static int mysql_init_variables(void)
 #else
   const char *tmpenv;
   if (!(tmpenv = getenv("MY_BASEDIR_VERSION")))
-    tmpenv = DEFAULT_MYSQL_HOME;
+   //sfh add    tmpenv = DEFAULT_MYSQL_HOME;
+		tmpenv = DEFAULT_MYSQL_HOME_DirPath;
   (void) strmake(mysql_home, tmpenv, sizeof(mysql_home)-1);
 #endif
   return 0;
@@ -8854,11 +8871,14 @@ static void set_server_version(void)
 
 static char *get_relative_path(const char *path)
 {
-  if (test_if_hard_path(path) &&
-      is_prefix(path,DEFAULT_MYSQL_HOME) &&
-      strcmp(DEFAULT_MYSQL_HOME,FN_ROOTDIR))
+   if (test_if_hard_path(path) &&
+//sfh add      is_prefix(path,DEFAULT_MYSQL_HOME) &&
+	  is_prefix(path,DEFAULT_MYSQL_HOME_DirPath) &&
+//sfh add      strcmp(DEFAULT_MYSQL_HOME,FN_ROOTDIR))
+	   strcmp(DEFAULT_MYSQL_HOME_DirPath,FN_ROOTDIR))
   {
-    path+=(uint) strlen(DEFAULT_MYSQL_HOME);
+//sfh add    path+=(uint) strlen(DEFAULT_MYSQL_HOME);
+	path+=(uint) strlen(DEFAULT_MYSQL_HOME_DirPath);
     while (*path == FN_LIBCHAR)
       path++;
   }
