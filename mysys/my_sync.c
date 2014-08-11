@@ -51,6 +51,7 @@ int my_sync(File fd, myf my_flags)
   do
   {
 #if defined(F_FULLFSYNC)
+
     /*
       In Mac OS X >= 10.3 this call is safer than fsync() (it forces the
       disk's cache and guarantees ordered writes).
@@ -61,10 +62,13 @@ int my_sync(File fd, myf my_flags)
     DBUG_PRINT("info",("fcntl(F_FULLFSYNC) failed, falling back"));
 #endif
 #if defined(HAVE_FDATASYNC) && HAVE_DECL_FDATASYNC
+//sfh add delete
     res= fdatasync(fd);
 #elif defined(HAVE_FSYNC)
+
     res= fsync(fd);
 #elif defined(__WIN__)
+
     res= _commit(fd);
 #else
 #error Cannot find a way to sync a file, durability in danger
