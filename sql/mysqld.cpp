@@ -1781,7 +1781,7 @@ static void network_init(void)
       We should not use SO_REUSEADDR on windows as this would enable a
       user to open two mysqld servers with the same TCP/IP port.
     */
-    (void) setsockopt(ip_sock,SOL_SOCKET,SO_REUSEADDR,(char*)&arg,sizeof(arg));
+    (void) setsockopt(ip_sock,SOL_SOCKET,SO_REUSEADDR,(char*)&arg,sizeof(arg)); //sfh
 #endif /* __WIN__ */
     /*
       Sometimes the port is not released fast enough when stopping and
@@ -1816,6 +1816,8 @@ static void network_init(void)
 		      socket_errno);
       unireg_abort(1);
     }
+	//sfh add
+	printf("inti_network over!\n");
   }
 
 #ifdef __NT__
@@ -4518,8 +4520,8 @@ we force server id to 2, but this MySQL server will not act as a slave.");
 
   execute_ddl_log_recovery();
 
-  if (Events::init(opt_noacl || opt_bootstrap))
-    unireg_abort(1);
+ /*sfh add if (Events::init(opt_noacl || opt_bootstrap))
+    unireg_abort(1); */
 
   if (opt_bootstrap)
   {
@@ -5124,6 +5126,7 @@ pthread_handler_t handle_connections_sockets(void *arg __attribute__((unused)))
       size_socket length=sizeof(struct sockaddr_in);
       new_sock = accept(sock, my_reinterpret_cast(struct sockaddr *) (&cAddr),
 			&length);
+	  printf("accept return %d,length is %d \n",new_sock,length);//sfh add
 #ifdef __NETWARE__ 
       // TODO: temporary fix, waiting for TCP/IP fix - DEFECT000303149
       if ((new_sock == INVALID_SOCKET) && (socket_errno == EINVAL))

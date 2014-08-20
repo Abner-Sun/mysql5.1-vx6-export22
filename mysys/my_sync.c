@@ -62,7 +62,7 @@ int my_sync(File fd, myf my_flags)
     DBUG_PRINT("info",("fcntl(F_FULLFSYNC) failed, falling back"));
 #endif
 #if defined(HAVE_FDATASYNC) && HAVE_DECL_FDATASYNC
-//sfh add delete
+//sfh add 
     res= fdatasync(fd);
 #elif defined(HAVE_FSYNC)
 
