@@ -115,7 +115,7 @@ MY_DIR	*my_dir(const char *path, myf MyFlags)
   pthread_mutex_lock(&THR_LOCK_open);
 #endif
 
-  dirp = opendir(directory_file_name(tmp_path,(char *) path));
+  dirp = opendir(directory_file_name(tmp_path,(char *) path));//sfh add go tihs way can't open dir 
 #if defined(__amiga__)
   if ((dirp->dd_fd) < 0)			/* Directory doesn't exists */
     goto error;
@@ -533,8 +533,9 @@ MY_STAT *my_stat(const char *path, MY_STAT *stat_area, myf my_flags)
                     (long) stat_area, my_flags));
 
   if ((m_used= (stat_area == NULL)))
-    if (!(stat_area = (MY_STAT *) my_malloc(sizeof(MY_STAT), my_flags)))
+    if (!(stat_area = (MY_STAT *) my_malloc(sizeof(MY_STAT), my_flags)))    
       goto error;
+	  
   if (! stat((char *) path, (struct stat *) stat_area) )
     DBUG_RETURN(stat_area);
 

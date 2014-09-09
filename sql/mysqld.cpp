@@ -4520,8 +4520,8 @@ we force server id to 2, but this MySQL server will not act as a slave.");
 
   execute_ddl_log_recovery();
 
- /*sfh add if (Events::init(opt_noacl || opt_bootstrap))
-    unireg_abort(1); */
+if (Events::init(opt_noacl || opt_bootstrap))
+    unireg_abort(1); 
 
   if (opt_bootstrap)
   {

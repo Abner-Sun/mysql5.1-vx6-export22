@@ -679,11 +679,11 @@ int mysql_create_db(THD *thd, char *db, HA_CREATE_INFO *create_info,
   }
   else
   {
-    if (my_errno != ENOENT)
+    /* sfh add if (my_errno != ENOENT)
     {
       my_error(EE_STAT, MYF(0), path, my_errno);
       goto exit;
-    }
+    } */
     if (my_mkdir(path,0777,MYF(0)) < 0)
     {
       my_error(ER_CANT_CREATE_DB, MYF(0), db, my_errno);

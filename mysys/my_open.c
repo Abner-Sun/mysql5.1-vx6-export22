@@ -67,6 +67,7 @@ File my_open(const char *FileName, int Flags, myf MyFlags)
 #endif
 
 #elif !defined(NO_OPEN_3)
+
   fd = open(FileName, Flags, my_umask);	/* Normal unix */
 #else
   fd = open((char *) FileName, Flags);

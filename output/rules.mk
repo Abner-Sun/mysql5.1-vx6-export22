@@ -97,11 +97,11 @@ LIBDEPS := $(patsubst %.cpp, %.dd, $(LIBDEPS))
 
 ################################################
 
-CFLAGS := -mtune=pentium4 -march=pentium4 -mrtp -fno-strict-aliasing -D_C99 -D_HAS_C9X  -D_VX_CPU=_VX_PENTIUM4 -D_VX_TOOL_FAMILY=gnu -D_VX_TOOL=gnu -I$(wind_base)/target/usr/h -I$(wind_base)/target/usr/h/wrn/coreip -I$(wind_components)/$(COMP_WINDML)/h -I$(wind_components)/$(COMP_WINDML)/src/include/$(WIND_PLATFORM) -I$(wind_base)/../../vx68_miss/include -D__WORDSIZE=32 -D_MACH_I32=int
+CFLAGS := -mtune=pentium -march=pentium -mrtp -fno-strict-aliasing -D_C99 -D_HAS_C9X  -D_VX_CPU=_VX_PENTIUM4 -D_VX_TOOL_FAMILY=gnu -D_VX_TOOL=gnu -I$(wind_base)/target/usr/h -I$(wind_base)/target/usr/h/wrn/coreip -I$(wind_components)/$(COMP_WINDML)/h -I$(wind_components)/$(COMP_WINDML)/src/include/$(WIND_PLATFORM) -I$(wind_base)/../../vx68_miss/include -D__WORDSIZE=32 -D_MACH_I32=int
 
-CXXFLAGS=  -mtune=pentium4 -march=pentium4 -mrtp -fno-strict-aliasing -D_C99 -D_HAS_C9X  -D_VX_CPU=_VX_PENTIUM4 -D_VX_TOOL_FAMILY=gnu -D_VX_TOOL=gnu -I$(wind_base)/target/usr/h -I$(wind_base)/target/usr/h/wrn/coreip -I$(wind_components)/$(COMP_WINDML)/h -I$(wind_components)/$(COMP_WINDML)/src/include/$(WIND_PLATFORM) -I$(wind_base)/../../vx68_miss/include -D__WORDSIZE=32 -D_MACH_I32=int
+CXXFLAGS=  -mtune=pentium -march=pentium -mrtp -fno-strict-aliasing -D_C99 -D_HAS_C9X  -D_VX_CPU=_VX_PENTIUM4 -D_VX_TOOL_FAMILY=gnu -D_VX_TOOL=gnu -I$(wind_base)/target/usr/h -I$(wind_base)/target/usr/h/wrn/coreip -I$(wind_components)/$(COMP_WINDML)/h -I$(wind_components)/$(COMP_WINDML)/src/include/$(WIND_PLATFORM) -I$(wind_base)/../../vx68_miss/include -D__WORDSIZE=32 -D_MACH_I32=int
 
-LDFLAGS := -mtune=pentium4 -march=pentium4 -mrtp -fno-strict-aliasing -D_C99 -D_HAS_C9X  -L$(wind_usr)/../lib/usr/lib/pentium/PENTIUM4/common
+LDFLAGS := -mtune=pentium -march=pentium -mrtp -fno-strict-aliasing -D_C99 -D_HAS_C9X  -L$(wind_usr)/../lib/usr/lib/pentium/PENTIUM4/common
 
 ifeq ($(DEBUG),Y)
 CFLAGS += -DTD_DEBUG -O0 -ggdb3

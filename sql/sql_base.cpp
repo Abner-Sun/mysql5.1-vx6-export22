@@ -2555,11 +2555,15 @@ TABLE *open_table(THD *thd, TABLE_LIST *table_list, MEM_ROOT *mem_root,
     *refresh=0;
 
   /* an open table operation needs a lot of the stack space */
-  if (check_stack_overrun(thd, STACK_MIN_SIZE_FOR_OPEN, (uchar *)&alias))
-    DBUG_RETURN(0);
-
+  if (check_stack_overrun(thd, STACK_MIN_SIZE_FOR_OPEN, (uchar *)&alias)){
+	
+	DBUG_RETURN(0);
+  	}
   if (thd->killed)
+  	{
+
     DBUG_RETURN(0);
+  	}
 
   key_length= (create_table_def_key(thd, key, table_list, 1) -
                TMP_TABLE_KEY_EXTRA);
@@ -2605,7 +2609,8 @@ TABLE *open_table(THD *thd, TABLE_LIST *table_list, MEM_ROOT *mem_root,
 
   if (flags & MYSQL_OPEN_TEMPORARY_ONLY)
   {
-    my_error(ER_NO_SUCH_TABLE, MYF(0), table_list->db, table_list->table_name);
+
+	my_error(ER_NO_SUCH_TABLE, MYF(0), table_list->db, table_list->table_name);
     DBUG_RETURN(0);
   }
 
@@ -2698,6 +2703,7 @@ TABLE *open_table(THD *thd, TABLE_LIST *table_list, MEM_ROOT *mem_root,
         {
           DBUG_ASSERT(table_list->view != 0);
           VOID(pthread_mutex_unlock(&LOCK_open));
+	
           DBUG_RETURN(0); // VIEW
         }
         VOID(pthread_mutex_unlock(&LOCK_open));
@@ -2714,6 +2720,7 @@ TABLE *open_table(THD *thd, TABLE_LIST *table_list, MEM_ROOT *mem_root,
       my_error(ER_NO_SUCH_TABLE, MYF(0), table_list->db, table_list->alias);
     else
       my_error(ER_TABLE_NOT_LOCKED, MYF(0), alias);
+	
     DBUG_RETURN(0);
   }
 
@@ -2752,6 +2759,7 @@ TABLE *open_table(THD *thd, TABLE_LIST *table_list, MEM_ROOT *mem_root,
     if (refresh)
       *refresh=1;
     VOID(pthread_mutex_unlock(&LOCK_open));
+
     DBUG_RETURN(0);
   }
 
@@ -2820,6 +2828,7 @@ TABLE *open_table(THD *thd, TABLE_LIST *table_list, MEM_ROOT *mem_root,
       {
 	VOID(pthread_mutex_unlock(&LOCK_open));
         my_error(ER_UPDATE_TABLE_USED, MYF(0), table->s->table_name.str);
+		
         DBUG_RETURN(0);
       }
 
@@ -2867,6 +2876,7 @@ TABLE *open_table(THD *thd, TABLE_LIST *table_list, MEM_ROOT *mem_root,
       */
       if (refresh)
 	*refresh=1;
+	 
       DBUG_RETURN(0);
     }
   }
@@ -2901,6 +2911,7 @@ TABLE *open_table(THD *thd, TABLE_LIST *table_list, MEM_ROOT *mem_root,
       if (check_if_table_exists(thd, table_list, &exists))
       {
         VOID(pthread_mutex_unlock(&LOCK_open));
+	
         DBUG_RETURN(NULL);
       }
 
@@ -2912,6 +2923,7 @@ TABLE *open_table(THD *thd, TABLE_LIST *table_list, MEM_ROOT *mem_root,
         if (!(table= table_cache_insert_placeholder(thd, key, key_length)))
         {
           VOID(pthread_mutex_unlock(&LOCK_open));
+		  
           DBUG_RETURN(NULL);
         }
         /*
@@ -2932,6 +2944,7 @@ TABLE *open_table(THD *thd, TABLE_LIST *table_list, MEM_ROOT *mem_root,
     if (!(table=(TABLE*) my_malloc(sizeof(*table),MYF(MY_WME))))
     {
       VOID(pthread_mutex_unlock(&LOCK_open));
+	  
       DBUG_RETURN(NULL);
     }
 
@@ -2941,6 +2954,7 @@ TABLE *open_table(THD *thd, TABLE_LIST *table_list, MEM_ROOT *mem_root,
     {
       my_free((uchar*)table, MYF(0));
       VOID(pthread_mutex_unlock(&LOCK_open));
+	
       DBUG_RETURN(NULL);
     }
     if (table_list->view || error < 0)
@@ -3973,7 +3987,10 @@ retry:
                                            OPEN_VIEW |
                                            table_list->i_s_requested_object,
                                            &error)))
+    {
+   
     DBUG_RETURN(1);
+  	}
 
   if (share->is_view)
   {
@@ -4174,6 +4191,7 @@ retry:
 
 err:
   release_table_share(share, RELEASE_NORMAL);
+
   DBUG_RETURN(1);
 }
 
@@ -5135,7 +5153,10 @@ int open_and_lock_tables_derived(THD *thd, TABLE_LIST *tables, bool derived)
   for ( ; ; ) 
   {
     if (open_tables(thd, &tables, &counter, 0))
+    	{
+    	
       DBUG_RETURN(-1);
+	  }
 
     DBUG_EXECUTE_IF("sleep_open_and_lock_after_open", {
       const char *old_proc_info= thd->proc_info;
@@ -9146,7 +9167,10 @@ open_system_tables_for_read(THD *thd, TABLE_LIST *table_list,
     TABLE *table= open_table(thd, tables, thd->mem_root, &not_used,
                              MYSQL_LOCK_IGNORE_FLUSH);
     if (!table)
+    	{
+    	
       goto error;
+    	}
 
     DBUG_ASSERT(table->s->table_category == TABLE_CATEGORY_SYSTEM);
 
